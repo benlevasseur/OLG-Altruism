@@ -96,14 +96,16 @@ var C          $C_{t}$                     (long_name='Aggregate Consumption')
     revM       $rev_{t,j,M}$               (long_name='Government Tax Revenue from Households of age M to P-1')
     revP       $rev_{t,j,P}$               (long_name='Government Tax Revenue from Households of age P to R-1')
     revR       $rev_{t,j,R}$               (long_name='Government Tax Revenue from Households of age R to S-1') 
+    junk
     ;
+varexo phi            $\phi$             (long_name='Households weight of parents utility')
+    gamma          $\gamma$           (long_name='Households weight of parents utility')
+;
 //****************************************************************************
 //Define parameters
 //****************************************************************************    
 parameters beta    $\beta^{s-1}$      (long_name='Intertemporal Discount Factor')
     alpha          $\alpha$           (long_name='Capital Share of Production')
-    phi            $\phi$             (long_name='Households weight of parents utility')
-    gamma          $\gamma$           (long_name='Households weight of parents utility')
     varepsilon     $\varepsilon$      (long_name='Constant Elasticity of Substitution between Capital and Labor')
     delta          $\delta$           (long_name='Capital Depreciation Rate')
     tauc           $\tau_{t}^{c}$     (long_name='Tax Rate on Consumption')
@@ -145,8 +147,6 @@ parameters beta    $\beta^{s-1}$      (long_name='Intertemporal Discount Factor'
 //****************************************************************************    
 beta=.93;
 alpha=.33; 
-phi=.03;
-gamma=.07;
 varepsilon=.87;
 delta=.08;
 tauc=.0635;
@@ -551,6 +551,8 @@ Theta = thetaE + thetaF + thetaM + thetaP + thetaR;
 
 K = (((1+varrho)*(Theta(-1)))-delta);
 
+junk=0.9*junk(+1);
+
 end;
 
 initval;
@@ -643,12 +645,11 @@ revP   = revPss;
 revR  = revRss;
 end;
 
+shocks; 
+var phi; stderr 0.009;
+var gamma; stderr 0.009;
+end;
 
-resid;
-steady(solve_algo=2,maxit=10000);
-check;
-write_latex_static_model;
-
-
-
-
+stoch_simul(order=2, irf=40, periods=2000);
+write_latex_parameter_table;
+write_latex_definitions;
