@@ -1,1 +1,3 @@
-# OLG-Inequality
+# OLG-Altrusim
+
+This model and code presents a 5-cohort Heterogenous Agent model in which agents exhibit two-sided altruistic concerns a la Kimball  (Gifts and Bequests) and participate in two retirement schemes. The government taxes these schemes along with wages, consumption and capital assets. This code is implemented in dynare using two files, the steady-state determining file, and the stochastic simulation file. The stochastic simulation file can be run alone, however it is best to use both to get a complete picutre of the shock processes and the response functions deviation from the steady state.
